@@ -79,8 +79,9 @@ TLC5940_DEFINES = -DTLC5940_N=$(TLC5940_N) \
 # ---------- End TLC5940 Configuration Section ----------
 
 # Tune the lines below only if you know what you are doing:
-AVRDUDE    = avrdude $(PROGRAMMER) -p $(DEVICE)
-COMPILE    = avr-gcc -std=gnu99 -g -Wall -Winline -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE) $(TLC5940_DEFINES)
+AVRDUDE       = avrdude $(PROGRAMMER) -p $(DEVICE)
+COMPILE       = avr-gcc -std=gnu99 -g -Wall -Winline -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE) $(TLC5940_DEFINES)
+COMPILE_GPLUS = avr-g++ -g -Wall -Winline -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE) $(TLC5940_DEFINES)
 #COMPILE    = avr-gcc -std=gnu99 -g -Wall -Winline -O3 -funroll-loops -DF_CPU=$(CLOCK) -mmcu=$(DEVICE) $(TLC5940_DEFINES)
 #COMPILE    = avr-gcc -std=gnu99 -g -Wall -Winline -mint8 -O3 -funroll-loops -DF_CPU=$(CLOCK) -mmcu=$(DEVICE) $(TLC5940_DEFINES)
 
@@ -91,6 +92,9 @@ all:	main.hex
 
 .c.o:
 	$(COMPILE) -c $< -o $@
+
+.cpp.o:
+	$(COMPILE_GPLUS) -c $< -o $@
 
 .S.o:
 	$(COMPILE) -x assembler-with-cpp -c $< -o $@
