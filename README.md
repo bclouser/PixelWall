@@ -1,4 +1,7 @@
-Demystifying the TLC5940 - Chapter 7
+14x6 PWM Pixel Wall. 
+
+
+Using the driver based on Demystifying the TLC5940
 
 Instructions:
 

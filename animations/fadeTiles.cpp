@@ -8,10 +8,20 @@
 
 
 // Used for random generation
-#define RAND_MAX 0xFF0
+#define RAND_MAX 0xFFF
 
 static const int8_t fadeFactor = 2;
 
+bool gimmeRandBool()
+{
+	int16_t tempRand = rand();
+
+	if( tempRand > (RAND_MAX/2) )
+	{
+		return true;
+	}
+	return false;
+}
 
 void fadeTilesRunLoop(const int8_t& numSquares, const int16_t& maxBrightness)
 {
@@ -25,10 +35,10 @@ void fadeTilesRunLoop(const int8_t& numSquares, const int16_t& maxBrightness)
 	for (int i = 0; i < numSquares; i++)
 	{
 		// No "new" operator... gross!
-		allSquares[i] = (LedSquare*)malloc(sizeof(allSquares[i]));
+		allSquares[i] = (LedSquare*)malloc(sizeof(LedSquare));
 		
 		// Initialize object
-		allSquares[i]->init( (int16_t)rand() );
+		allSquares[i]->init( (int16_t)rand(), gimmeRandBool() );
 	}
 
 	// Default all channels off
@@ -39,7 +49,7 @@ void fadeTilesRunLoop(const int8_t& numSquares, const int16_t& maxBrightness)
 
 	while (1<2) // infinite loop 
 	{
-		while(gsUpdateFlag);	// wait until we can modify gsData
+		while(gsUpdateFlag);	// wait until we can modify grayscaleData
 		
 		for (uint16_t i = 0; i < numSquares; i++)
 		{
@@ -56,8 +66,8 @@ void fadeTilesRunLoop(const int8_t& numSquares, const int16_t& maxBrightness)
 				{
 					// Flip switch so we will start descending
 					allSquares[i]->m_brightnessAscending = false;
-					// In case we have gone over.
-					//allSquares[i]->m_currentBrightness = maxBrightness-1;
+					// In case we have gone over. Why the hell doesn't this work
+					//allSquares[i]->m_currentBrightness = maxBrightness;
 				}
 			}
 			else 
