@@ -5,13 +5,11 @@
 #include <avr/interrupt.h>
 #include "../tlc5940.h"
 
-// Used for random generation
-#define RAND_MAX 0xFF0
 
 static const int8_t fadeFactor = 2;
 
 
-void countSquaresRunLoop(const int8_t& numSquares, const int16_t& maxBrightness)
+void countSquaresRunLoop(const uint8_t& numSquares, const int16_t& maxBrightness)
 {
 	uint16_t i = 0;
 	TLC5940_Init();

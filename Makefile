@@ -20,7 +20,7 @@ CLOCK      = 16000000
 #CLOCK      = 8000000
 #CLOCK      = 1000000
 PROGRAMMER = -c avrispmkII -P usb
-OBJECTS    = main.o tlc5940.o animations/fadeTiles.o animations/countSquares.o
+OBJECTS    = main.o tlc5940.o animations/fadeTiles.o animations/countSquares.o animations/fadeSingle.o
 
 # Default setting for ATmega328P in Arduino Duemilanove
 #FUSES      = -U hfuse:w:0xda:m -U lfuse:w:0xff:m

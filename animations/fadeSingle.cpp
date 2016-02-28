@@ -9,30 +9,30 @@
 
 static const int8_t fadeFactor = 2;
 
-bool gimmeRandBool()
-{
-	int16_t tempRand = rand();
+const uint16_t squareInitTable[] = {
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050,
+	0x000,0x00F,0xF00,0x010,0x0F0,0x0D0,0x0A0,0xB00,0x300,0x050
+};
 
-	if( tempRand > (RAND_MAX/2) )
-	{
-		return true;
-	}
-	return false;
-}
 
-void fadeTilesRunLoop(const uint8_t& numSquares, const int16_t& maxBrightness)
+void fadeSingleRunLoop(const uint8_t& numSquares, const int16_t& maxBrightness)
 {
 	TLC5940_Init();
-	srand(4287); // seed random generator...
 
-	//Create container to hold all our LEDSquares
 	LedSquare allSquares[numSquares];
-
 	// Create our LedSquare objects by giving them a random starting brightness
 	for (int i = 0; i < numSquares; i++)
 	{	
 		// Initialize object
-		allSquares[i].init( rand()%maxBrightness, gimmeRandBool() );
+		allSquares[i].init( squareInitTable[i], true );
 	}
 
 	// Default all channels off
@@ -63,6 +63,8 @@ void fadeTilesRunLoop(const uint8_t& numSquares, const int16_t& maxBrightness)
 					allSquares[i].m_brightnessAscending = false;
 					// In case we have gone over. Why the hell doesn't this work
 					allSquares[i].m_currentBrightness = maxBrightness;
+
+					//TLC5940_SetGS(1, 0xFFF);
 				}
 			}
 			else 
@@ -80,12 +82,12 @@ void fadeTilesRunLoop(const uint8_t& numSquares, const int16_t& maxBrightness)
 					allSquares[i].m_brightnessAscending = true;
 					// In case we had gone negative
 					allSquares[i].m_currentBrightness = 0x00;
+					//TLC5940_SetGS(1, 0x000);
 				}
 			}
 		}
 
 		TLC5940_SetGSUpdateFlag();
-		
 		_delay_us(1000);
 	}
 }
